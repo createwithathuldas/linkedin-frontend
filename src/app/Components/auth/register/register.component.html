@@ -1,0 +1,37 @@
+<div class="auth-page">
+  <div class="auth-page__card li-card">
+    <h2>Join LinkedIn</h2>
+    @if (error()) {
+      <div class="auth-page__error">{{ error() }}</div>
+    }
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="auth-page__row">
+        <div>
+          <label>First name</label>
+          <input class="li-input" formControlName="firstName" />
+        </div>
+        <div>
+          <label>Last name</label>
+          <input class="li-input" formControlName="lastName" />
+        </div>
+      </div>
+      <label>Email</label>
+      <input class="li-input" type="email" formControlName="email" />
+      <label>Password (8+ characters)</label>
+      <input class="li-input" type="password" formControlName="password" />
+      <label>Headline</label>
+      <input class="li-input" formControlName="headline" placeholder="e.g. Software Engineer" />
+      <label>Location</label>
+      <input class="li-input" formControlName="location" placeholder="e.g. New York, NY" />
+      <p class="auth-page__terms">
+        By clicking Agree & Join, you agree to the LinkedIn User Agreement, Privacy Policy, and Cookie Policy.
+      </p>
+      <button type="submit" class="li-btn li-btn--primary auth-page__submit" [disabled]="loading() || form.invalid">
+        {{ loading() ? 'Creating account...' : 'Agree & Join' }}
+      </button>
+    </form>
+    <p class="auth-page__footer">
+      Already on LinkedIn? <a routerLink="/auth/login">Sign in</a>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="games-page">
+  <div class="li-card games-page__header">
+    <h1>Today's puzzles</h1>
+    <p>Keep your mind sharp with daily games</p>
+  </div>
+
+  <div class="games-page__types">
+    @for (type of ['Zip', 'MiniSudoku', 'Tango', 'Queens']; track type) {
+      <button
+        class="li-btn"
+        [class.li-btn--primary]="selectedType() === type"
+        [class.li-btn--muted]="selectedType() !== type"
+        (click)="loadPuzzle(type)"
+      >{{ type }}</button>
+    }
+  </div>
+
+  <div class="li-card games-page__puzzle">
+    <h2>{{ selectedType() }}</h2>
+    @if (streak()) {
+      <p class="games-page__streak">Streak: {{ streak() | json }}</p>
+    }
+    <pre class="games-page__data">{{ puzzle() | json }}</pre>
+    <div class="games-page__input">
+      <input class="li-input" [(ngModel)]="guess" placeholder="Enter your guess" (keyup.enter)="submit()" />
+      <button class="li-btn li-btn--primary" (click)="submit()" [disabled]="submitting()">
+        {{ submitting() ? 'Submitting...' : 'Submit' }}
+      </button>
+    </div>
+    @if (result()) {
+      <p class="games-page__result">{{ result() }}</p>
+    }
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<div class="premium-page">
+  <div class="premium-page__hero li-card">
+    <h1>Try Premium</h1>
+    <p>Get exclusive tools and insights to grow your career</p>
+  </div>
+
+  <div class="premium-page__plans">
+    <div class="li-card premium-page__plan premium-page__plan--featured">
+      <h2>Premium Career</h2>
+      <p class="premium-page__price">1 month free trial</p>
+      <ul>
+        <li>See who viewed your profile</li>
+        <li>Direct messaging to recruiters</li>
+        <li>Featured applicant badge</li>
+        <li>Salary insights</li>
+      </ul>
+      <button class="li-btn li-btn--primary" (click)="subscribe('PremiumCareer')" [disabled]="subscribing()">
+        {{ subscribing() ? 'Processing...' : 'Try for free' }}
+      </button>
+    </div>
+
+    <div class="li-card premium-page__plan">
+      <h2>Premium Business</h2>
+      <p class="premium-page__price">For teams</p>
+      <ul>
+        <li>Unlimited people browsing</li>
+        <li>Advanced search filters</li>
+        <li>Business insights</li>
+      </ul>
+      <button class="li-btn li-btn--secondary" (click)="subscribe('PremiumBusiness')">Choose plan</button>
+    </div>
+  </div>
+</div>

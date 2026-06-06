@@ -1,0 +1,42 @@
+<div class="messaging-page li-card">
+  <div class="messaging-page__sidebar">
+    <h2>Messaging</h2>
+    @for (conv of conversations(); track conv.id) {
+      <button
+        class="messaging-page__conv"
+        [class.messaging-page__conv--active]="selected()?.id === conv.id"
+        (click)="selectConversation(conv)"
+      >
+        <div class="messaging-page__conv-avatar">C</div>
+        <div>
+          <strong>{{ conv.title || 'Conversation #' + conv.id }}</strong>
+          <p>{{ conv.lastMessage?.text || 'No messages yet' }}</p>
+        </div>
+      </button>
+    } @empty {
+      <p class="messaging-page__empty">No conversations yet</p>
+    }
+  </div>
+
+  <div class="messaging-page__chat">
+    @if (selected(); as conv) {
+      <header class="messaging-page__chat-header">
+        <h3>{{ conv.title || 'Conversation #' + conv.id }}</h3>
+      </header>
+      <div class="messaging-page__messages">
+        @for (msg of messages(); track msg.id) {
+          <div class="messaging-page__message">
+            <span class="messaging-page__sender">User #{{ msg.senderUserId }}</span>
+            <p>{{ msg.text }}</p>
+          </div>
+        }
+      </div>
+      <footer class="messaging-page__input">
+        <input class="li-input" [(ngModel)]="newMessage" placeholder="Write a message..." (keyup.enter)="send()" />
+        <button class="li-btn li-btn--primary" (click)="send()">Send</button>
+      </footer>
+    } @else {
+      <div class="messaging-page__placeholder">Select a conversation</div>
+    }
+  </div>
+</div>

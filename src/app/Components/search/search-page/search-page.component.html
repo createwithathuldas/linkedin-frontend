@@ -1,0 +1,31 @@
+<div class="search-page">
+  <div class="li-card search-page__header">
+    <input class="li-input" [(ngModel)]="query" placeholder="Search" (keyup.enter)="doSearch()" />
+    <div class="search-page__filters">
+      @for (f of filters; track f.id) {
+        <button
+          [class.search-page__filter--active]="activeFilter() === f.id"
+          (click)="setFilter(f.id)"
+        >{{ f.label }}</button>
+      }
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="li-card search-page__loading">Searching...</div>
+  } @else {
+    @for (r of results(); track r.id) {
+      <div class="li-card search-page__result">
+        <div class="search-page__result-avatar">{{ r.type?.[0] }}</div>
+        <div>
+          <a [routerLink]="r.type === 'Person' ? ['/profile', r.id] : r.type === 'Job' ? ['/jobs', r.id] : ['/companies', r.id]">
+            {{ r.title || r.subtitle || 'Result #' + r.id }}
+          </a>
+          <span class="li-text-muted">{{ r.type }}</span>
+        </div>
+      </div>
+    } @empty {
+      <div class="li-card search-page__empty">No results for "{{ query }}"</div>
+    }
+  }
+</div>

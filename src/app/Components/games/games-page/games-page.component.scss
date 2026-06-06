@@ -1,0 +1,49 @@
+.games-page {
+  &__header {
+    padding: 24px;
+    margin-bottom: 8px;
+
+    h1 { margin: 0 0 4px; }
+    p { color: var(--li-black-60); margin: 0; }
+  }
+
+  &__types {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+
+  &__puzzle {
+    padding: 24px;
+
+    h2 { margin: 0 0 12px; }
+  }
+
+  &__streak {
+    color: var(--li-green);
+    font-weight: 600;
+  }
+
+  &__data {
+    background: #f8f8f8;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    overflow: auto;
+  }
+
+  &__input {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+
+    input { flex: 1; }
+  }
+
+  &__result {
+    margin-top: 12px;
+    color: var(--li-green);
+    font-weight: 600;
+  }
+}

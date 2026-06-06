@@ -1,0 +1,31 @@
+<aside class="left-sidebar">
+  <div class="li-card left-sidebar__profile">
+    <div class="left-sidebar__banner"></div>
+    <a [routerLink]="['/profile', user()?.id]" class="left-sidebar__avatar-link">
+      <div class="left-sidebar__avatar">{{ getInitials() }}</div>
+    </a>
+    <div class="left-sidebar__info">
+      <a [routerLink]="['/profile', user()?.id]" class="left-sidebar__name">
+        {{ user()?.firstName }} {{ user()?.lastName }}
+      </a>
+      <p class="left-sidebar__headline">{{ user()?.headline || 'Add a headline' }}</p>
+    </div>
+    <hr class="li-divider" />
+    <a routerLink="/network" class="left-sidebar__stat">
+      <span class="left-sidebar__stat-label">Connections</span>
+      <span class="left-sidebar__stat-value">Grow your network</span>
+    </a>
+    <hr class="li-divider" />
+    <a routerLink="/premium" class="left-sidebar__premium">
+      <span>Access exclusive tools & insights</span>
+      <strong>Try Premium for ₹0</strong>
+    </a>
+  </div>
+
+  <div class="li-card left-sidebar__links">
+    <a routerLink="/groups">Groups</a>
+    <a routerLink="/games">Puzzles</a>
+    <a routerLink="/analytics">Analytics</a>
+    <a routerLink="/settings">Settings</a>
+  </div>
+</aside>

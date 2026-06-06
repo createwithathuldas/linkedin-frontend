@@ -1,0 +1,65 @@
+@if (user(); as u) {
+  <div class="profile-page">
+    <div class="li-card profile-page__header">
+      <div class="profile-page__banner"></div>
+      <div class="profile-page__avatar">{{ getInitials() }}</div>
+      <div class="profile-page__info">
+        <h1>{{ u.firstName }} {{ u.lastName }}</h1>
+        <p class="profile-page__headline">{{ u.headline || 'Add a headline' }}</p>
+        <p class="profile-page__location">{{ u.location || 'Add location' }}</p>
+        @if (u.openToWork) {
+          <span class="profile-page__badge">#OpenToWork</span>
+        }
+        @if (connectionDegree() !== null) {
+          <span class="li-text-muted">{{ connectionDegree() === 1 ? '1st' : connectionDegree() + 'nd' }} connection</span>
+        }
+      </div>
+      <div class="profile-page__actions">
+        <button class="li-btn li-btn--primary" (click)="connect()">Connect</button>
+        <button class="li-btn li-btn--secondary">Message</button>
+        <button class="li-btn li-btn--muted">More</button>
+      </div>
+    </div>
+
+    <div class="li-card profile-page__section">
+      <h2>About</h2>
+      <p>{{ u.summary || 'No summary yet.' }}</p>
+    </div>
+
+    <div class="li-card profile-page__section">
+      <h2>Experience</h2>
+      @for (exp of experience(); track exp.id) {
+        <div class="profile-page__item">
+          <strong>{{ exp.title }}</strong>
+          <p>{{ exp.company }} · {{ exp.location }}</p>
+          <p class="li-text-muted">{{ exp.startDate }} - {{ exp.current ? 'Present' : exp.endDate }}</p>
+        </div>
+      } @empty {
+        <p class="li-text-muted">No experience added.</p>
+      }
+    </div>
+
+    <div class="li-card profile-page__section">
+      <h2>Education</h2>
+      @for (edu of education(); track edu.id) {
+        <div class="profile-page__item">
+          <strong>{{ edu.school }}</strong>
+          <p>{{ edu.degree }} {{ edu.fieldOfStudy }}</p>
+        </div>
+      } @empty {
+        <p class="li-text-muted">No education added.</p>
+      }
+    </div>
+
+    <div class="li-card profile-page__section">
+      <h2>Skills</h2>
+      <div class="profile-page__skills">
+        @for (skill of skills(); track skill.id) {
+          <span class="profile-page__skill">{{ skill.name }} ({{ skill.endorsementCount || 0 }})</span>
+        } @empty {
+          <p class="li-text-muted">No skills added.</p>
+        }
+      </div>
+    </div>
+  </div>
+}

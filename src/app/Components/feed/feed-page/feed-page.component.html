@@ -1,0 +1,24 @@
+<div class="feed-page">
+  <app-create-post (created)="loadFeed()" />
+
+  @if (loading()) {
+    <div class="feed-page__loading li-card">
+      <div class="li-skeleton" style="height: 120px; margin: 16px;"></div>
+      <div class="li-skeleton" style="height: 200px; margin: 16px;"></div>
+    </div>
+  } @else if (error()) {
+    <div class="feed-page__error li-card">
+      <p>{{ error() }}</p>
+      <button class="li-btn li-btn--primary" (click)="loadFeed()">Retry</button>
+    </div>
+  } @else if (!feed().length) {
+    <div class="feed-page__empty li-card">
+      <h3>Your feed is empty</h3>
+      <p>Start by creating a post or connecting with others.</p>
+    </div>
+  } @else {
+    @for (post of feed(); track post.id) {
+      <app-post-card [post]="post" (updated)="loadFeed()" />
+    }
+  }
+</div>

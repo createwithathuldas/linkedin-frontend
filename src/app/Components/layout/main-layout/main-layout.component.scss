@@ -1,0 +1,32 @@
+.main-layout {
+  min-height: 100vh;
+  background: var(--li-bg);
+
+  &__container {
+    max-width: var(--li-max-width);
+    margin: 0 auto;
+    padding: 24px 24px 0;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 225px minmax(0, 555px) 300px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  &__main {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  .main-layout__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .main-layout__left,
+  .main-layout__right {
+    display: none;
+  }
+}

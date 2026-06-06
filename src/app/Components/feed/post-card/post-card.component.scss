@@ -1,0 +1,122 @@
+.post-card {
+  margin-bottom: 8px;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px 0;
+  }
+
+  &__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #e8e8e8;
+    color: var(--li-black-60);
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__author {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--li-black);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--li-blue);
+      text-decoration: underline;
+    }
+  }
+
+  &__time {
+    font-size: 12px;
+    color: var(--li-black-60);
+  }
+
+  &__content {
+    padding: 8px 16px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  &__stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 16px 8px;
+    font-size: 12px;
+    color: var(--li-black-60);
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 4px 8px;
+  }
+
+  &__action {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 8px;
+    border: none;
+    background: transparent;
+    color: var(--li-black-60);
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 4px;
+    flex: 1;
+    justify-content: center;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.04);
+      color: var(--li-black);
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &__comments {
+    padding: 12px 16px 16px;
+    border-top: 1px solid var(--li-border);
+  }
+
+  &__comment {
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  &__comment-author {
+    font-weight: 600;
+    font-size: 12px;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  &__comment-input {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+
+    input {
+      flex: 1;
+      padding: 8px 12px;
+    }
+  }
+}

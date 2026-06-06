@@ -1,0 +1,22 @@
+.job-detail {
+  padding: 24px;
+
+  h1 { font-size: 24px; margin: 0 0 8px; }
+
+  &__meta, &__type {
+    color: var(--li-black-60);
+    margin: 4px 0;
+  }
+
+  &__actions { margin: 16px 0; }
+
+  &__applied {
+    color: var(--li-green);
+    font-weight: 600;
+  }
+
+  &__description {
+    h2 { font-size: 20px; margin: 16px 0 8px; }
+    p { line-height: 1.6; white-space: pre-wrap; }
+  }
+}

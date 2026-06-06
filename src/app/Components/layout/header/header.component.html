@@ -1,0 +1,84 @@
+<header class="li-header">
+  <div class="li-header__inner">
+    <a routerLink="/feed" class="li-header__logo" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" width="34" height="34" fill="#0a66c2">
+        <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h3v1.76h.03a3.39 3.39 0 012.67-1.4c1.88 0 3.3 1.23 3.3 3.88z"/>
+      </svg>
+    </a>
+
+    <div class="li-header__search" [class.li-header__search--active]="showSearch()">
+      <svg class="li-header__search-icon" viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+        <path d="M14.56 12.44l-3.2-3.2a5.5 5.5 0 10-1.06 1.06l3.2 3.2a.75.75 0 101.06-1.06zM6 10.5A4.5 4.5 0 116 1.5a4.5 4.5 0 010 9z"/>
+      </svg>
+      <input
+        type="text"
+        class="li-header__search-input"
+        placeholder="Search"
+        [(ngModel)]="searchQuery"
+        (focus)="showSearch.set(true)"
+        (input)="onSearchInput()"
+        (keyup.enter)="submitSearch()"
+      />
+      @if (showSearch() && typeaheadResults().length) {
+        <div class="li-header__typeahead">
+          @for (result of typeaheadResults(); track result.id) {
+            <button class="li-header__typeahead-item" (click)="selectResult(result)">
+              <span class="li-header__typeahead-type">{{ result.type }}</span>
+              <span>{{ result.title || result.subtitle }}</span>
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <nav class="li-header__nav">
+      @for (item of navItems; track item.path) {
+        <a [routerLink]="item.path" routerLinkActive="li-header__nav-item--active" class="li-header__nav-item">
+          <span class="li-header__nav-icon" [attr.data-icon]="item.icon">
+            @switch (item.icon) {
+              @case ('home') {
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M23 9v2h-2v7a3 3 0 01-3 3h-4v-6h-4v6H6a3 3 0 01-3-3v-7H1V9l11-7z"/></svg>
+              }
+              @case ('people') {
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 16v6H3v-6a3 3 0 013-3h3a3 3 0 013 3zm5.5-3A3.5 3.5 0 1014 9.5a3.5 3.5 0 003.5 3.5zm1 2h-2.11A5.01 5.01 0 0019 16v2h4v-2a3 3 0 00-3-3zM7.5 6A4.5 4.5 0 1112 1.5 4.5 4.5 0 017.5 6zM3 20v-1a6 6 0 016-6h.09A5.99 5.99 0 0113 14v7H3z"/></svg>
+              }
+              @case ('jobs') {
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M20 7h-4V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2H4a1 1 0 00-1 1v11a3 3 0 003 3h14a3 3 0 003-3V8a1 1 0 00-1-1zM10 5h4v2h-4V5z"/></svg>
+              }
+              @case ('messaging') {
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M16 4H8a7 7 0 000 14h4v4l8.2-8.2A5.78 5.78 0 0022 12.5V11a7 7 0 00-6-7z"/></svg>
+              }
+              @case ('notifications') {
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+              }
+            }
+          </span>
+          <span class="li-header__nav-label">{{ item.label }}</span>
+        </a>
+      }
+
+      <div class="li-header__me" (click)="toggleMeMenu()">
+        <div class="li-header__me-avatar">{{ getInitials() }}</div>
+        <span class="li-header__nav-label">Me
+          <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M1 5l7 6 7-6"/></svg>
+        </span>
+        @if (showMeMenu()) {
+          <div class="li-header__me-menu" (click)="$event.stopPropagation()">
+            <a routerLink="/profile/{{ user()?.id }}">View Profile</a>
+            <a routerLink="/settings">Settings</a>
+            <a routerLink="/premium">Try Premium</a>
+            <hr class="li-divider" />
+            <button (click)="logout()">Sign Out</button>
+          </div>
+        }
+      </div>
+
+      <a routerLink="/premium" class="li-header__nav-item li-header__nav-item--premium">
+        <span class="li-header__nav-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        </span>
+        <span class="li-header__nav-label">For Business</span>
+      </a>
+    </nav>
+  </div>
+</header>

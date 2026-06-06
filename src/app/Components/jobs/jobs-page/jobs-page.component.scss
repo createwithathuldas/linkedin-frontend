@@ -1,0 +1,72 @@
+.jobs-page {
+  &__header {
+    padding: 16px 24px;
+    margin-bottom: 8px;
+
+    h1 { font-size: 20px; margin: 0 0 12px; }
+  }
+
+  &__tabs {
+    display: flex;
+    gap: 16px;
+
+    button {
+      background: none;
+      border: none;
+      padding: 8px 0;
+      font-weight: 600;
+      color: var(--li-black-60);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+
+      &.jobs-page__tab--active {
+        color: var(--li-green);
+        border-bottom-color: var(--li-green);
+      }
+    }
+  }
+
+  &__job {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    margin-bottom: 8px;
+  }
+
+  &__job-logo {
+    width: 56px;
+    height: 56px;
+    background: #e8e8e8;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  &__job-info { flex: 1; min-width: 0; }
+
+  &__job-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--li-black);
+    text-decoration: none;
+    display: block;
+
+    &:hover { color: var(--li-blue); text-decoration: underline; }
+  }
+
+  &__job-company, &__job-location {
+    font-size: 14px;
+    color: var(--li-black-60);
+    margin: 2px 0;
+  }
+
+  &__loading, &__empty {
+    padding: 24px;
+    text-align: center;
+    color: var(--li-black-60);
+  }
+}

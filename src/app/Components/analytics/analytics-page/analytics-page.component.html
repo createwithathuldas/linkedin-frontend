@@ -1,0 +1,17 @@
+<div class="analytics-page">
+  <h1>Analytics</h1>
+  <div class="analytics-page__grid">
+    <div class="li-card analytics-page__card">
+      <h2>Profile views</h2>
+      <pre>{{ profile() | json }}</pre>
+    </div>
+    <div class="li-card analytics-page__card">
+      <h2>Post impressions</h2>
+      <pre>{{ posts() | json }}</pre>
+    </div>
+    <div class="li-card analytics-page__card">
+      <h2>Followers</h2>
+      <pre>{{ followers() | json }}</pre>
+    </div>
+  </div>
+</div>

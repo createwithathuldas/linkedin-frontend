@@ -1,0 +1,18 @@
+<div class="companies-page">
+  <div class="li-card companies-page__header">
+    <h1>Companies</h1>
+  </div>
+
+  @for (c of list(); track c.id) {
+    <div class="li-card companies-page__item">
+      <div class="companies-page__logo">{{ c.name[0] }}</div>
+      <div class="companies-page__info">
+        <a [routerLink]="['/companies', c.id]"><strong>{{ c.name }}</strong></a>
+        <p>{{ c.industry || 'Industry not specified' }}</p>
+      </div>
+      <button class="li-btn li-btn--secondary" (click)="follow(c.id)">Follow</button>
+    </div>
+  } @empty {
+    <div class="li-card companies-page__empty">No companies found.</div>
+  }
+</div>

@@ -1,0 +1,29 @@
+<div class="auth-page">
+  <div class="auth-page__hero">
+    <svg viewBox="0 0 24 24" width="56" height="56" fill="#0a66c2">
+      <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h3v1.76h.03a3.39 3.39 0 012.67-1.4c1.88 0 3.3 1.23 3.3 3.88z"/>
+    </svg>
+    <h1>Welcome to your professional community</h1>
+  </div>
+
+  <div class="auth-page__card li-card">
+    <h2>Sign in</h2>
+    @if (error()) {
+      <div class="auth-page__error">{{ error() }}</div>
+    }
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label>Email</label>
+      <input class="li-input" type="email" formControlName="email" placeholder="Email" />
+      <label>Password</label>
+      <input class="li-input" type="password" formControlName="password" placeholder="Password" />
+      <label>MFA Code (if enabled)</label>
+      <input class="li-input" type="text" formControlName="mfaCode" placeholder="Optional" />
+      <button type="submit" class="li-btn li-btn--primary auth-page__submit" [disabled]="loading() || form.invalid">
+        {{ loading() ? 'Signing in...' : 'Sign in' }}
+      </button>
+    </form>
+    <p class="auth-page__footer">
+      New to LinkedIn? <a routerLink="/auth/register">Join now</a>
+    </p>
+  </div>
+</div>

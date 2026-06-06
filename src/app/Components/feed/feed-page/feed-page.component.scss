@@ -1,0 +1,22 @@
+.feed-page {
+  &__loading, &__error, &__empty {
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  &__error p {
+    color: var(--li-red);
+    margin-bottom: 16px;
+  }
+
+  &__empty h3 {
+    margin: 0 0 8px;
+    font-weight: 600;
+  }
+
+  &__empty p {
+    color: var(--li-black-60);
+    margin: 0;
+  }
+}

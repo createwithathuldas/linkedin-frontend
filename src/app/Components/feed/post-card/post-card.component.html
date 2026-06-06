@@ -1,0 +1,54 @@
+<article class="post-card li-card">
+  <header class="post-card__header">
+    <a [routerLink]="['/profile', post().authorUserId]" class="post-card__avatar">{{ getInitials(post().authorUserId) }}</a>
+    <div class="post-card__meta">
+      <a [routerLink]="['/profile', post().authorUserId]" class="post-card__author">Member #{{ post().authorUserId }}</a>
+      <span class="post-card__time">{{ formatDate(post().createdAt) }}</span>
+    </div>
+  </header>
+
+  <div class="post-card__content">
+    <p>{{ post().content }}</p>
+  </div>
+
+  <div class="post-card__stats">
+    <span>{{ post().reactionCount || 0 }} reactions</span>
+    <span>{{ post().commentCount || comments.length }} comments</span>
+  </div>
+
+  <hr class="li-divider" />
+
+  <div class="post-card__actions">
+    <button class="post-card__action" (click)="react('Like')">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M19.46 11l-3.91-3.91a7 7 0 01-9.8 0l-.22.22a7 7 0 000 9.8l3.91 3.91a7 7 0 009.8 0l.22-.22a7 7 0 000-9.8z"/></svg>
+      Like
+    </button>
+    <button class="post-card__action" (click)="loadComments()">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M7 9h10v1H7zm0 4h7v1H7z"/><path d="M20 2H4a2 2 0 00-2 2v14l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/></svg>
+      Comment
+    </button>
+    <button class="post-card__action">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+      Repost
+    </button>
+    <button class="post-card__action">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      Send
+    </button>
+  </div>
+
+  @if (toggleComments) {
+    <div class="post-card__comments">
+      @for (comment of comments; track comment.id) {
+        <div class="post-card__comment">
+          <span class="post-card__comment-author">User #{{ comment.userId }}</span>
+          <p>{{ comment.text }}</p>
+        </div>
+      }
+      <div class="post-card__comment-input">
+        <input class="li-input" [(ngModel)]="newComment" placeholder="Add a comment..." (keyup.enter)="addComment()" />
+        <button class="li-btn li-btn--primary" (click)="addComment()">Post</button>
+      </div>
+    </div>
+  }
+</article>

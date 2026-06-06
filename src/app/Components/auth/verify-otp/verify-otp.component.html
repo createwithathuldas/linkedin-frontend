@@ -1,0 +1,25 @@
+<div class="auth-page">
+  <div class="auth-page__card li-card">
+    <h2>Verify your email</h2>
+    <p class="auth-page__subtitle">We sent a 6-digit code to <strong>{{ email() }}</strong></p>
+    @if (error()) {
+      <div class="auth-page__error">{{ error() }}</div>
+    }
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label>Enter OTP</label>
+      <input class="li-input" formControlName="otp" maxlength="6" placeholder="123456" />
+      <button type="submit" class="li-btn li-btn--primary auth-page__submit" [disabled]="loading() || form.invalid">
+        {{ loading() ? 'Verifying...' : 'Verify & Continue' }}
+      </button>
+    </form>
+    <p class="auth-page__footer">
+      Didn't receive the code?
+      <button class="auth-page__link-btn" (click)="resend()" [disabled]="resending()">
+        {{ resending() ? 'Sending...' : 'Resend OTP' }}
+      </button>
+    </p>
+    <p class="auth-page__footer">
+      <a routerLink="/auth/login">Back to sign in</a>
+    </p>
+  </div>
+</div>

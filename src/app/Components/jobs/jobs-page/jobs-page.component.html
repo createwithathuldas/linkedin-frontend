@@ -1,0 +1,29 @@
+<div class="jobs-page">
+  <div class="jobs-page__header li-card">
+    <h1>Jobs</h1>
+    <div class="jobs-page__tabs">
+      <button [class.jobs-page__tab--active]="activeTab() === 'recommended'" (click)="setTab('recommended')">Top job picks for you</button>
+      <button [class.jobs-page__tab--active]="activeTab() === 'saved'" (click)="setTab('saved')">My jobs</button>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="li-card jobs-page__loading">Loading jobs...</div>
+  } @else {
+    <div class="jobs-page__list">
+      @for (job of (activeTab() === 'recommended' ? recommended() : saved()); track job.id) {
+        <div class="li-card jobs-page__job">
+          <div class="jobs-page__job-logo">J</div>
+          <div class="jobs-page__job-info">
+            <a [routerLink]="['/jobs', job.id]" class="jobs-page__job-title">{{ job.title }}</a>
+            <p class="jobs-page__job-company">Company #{{ job.companyId }}</p>
+            <p class="jobs-page__job-location">{{ job.location || 'Remote' }} · {{ job.jobType || 'Full-time' }}</p>
+          </div>
+          <button class="li-btn li-btn--secondary" (click)="saveJob(job.id)">Save</button>
+        </div>
+      } @empty {
+        <div class="li-card jobs-page__empty">No jobs found.</div>
+      }
+    </div>
+  }
+</div>

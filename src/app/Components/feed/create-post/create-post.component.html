@@ -1,0 +1,48 @@
+<div class="create-post li-card">
+  <div class="create-post__start" (click)="openComposer()">
+    <div class="create-post__avatar">{{ getInitials() }}</div>
+    <button class="create-post__trigger">Start a post</button>
+  </div>
+  <div class="create-post__actions">
+    <button class="create-post__action">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="#70b5f9"><path d="M19 4H5a3 3 0 00-3 3v12a3 3 0 003 3h14a3 3 0 003-3V7a3 3 0 00-3-3zm-4 11H9v-2h6v2zm2-4H7V9h10v2z"/></svg>
+      <span>Video</span>
+    </button>
+    <button class="create-post__action">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="#7fc15e"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      <span>Photo</span>
+    </button>
+    <button class="create-post__action">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="#e7a33e"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/></svg>
+      <span>Write article</span>
+    </button>
+  </div>
+</div>
+
+@if (showComposer()) {
+  <div class="create-post__modal-backdrop" (click)="closeComposer()">
+    <div class="create-post__modal li-card" (click)="$event.stopPropagation()">
+      <h3>Create a post</h3>
+      <div class="create-post__modal-user">
+        <div class="create-post__avatar">{{ getInitials() }}</div>
+        <div>
+          <strong>{{ user()?.firstName }} {{ user()?.lastName }}</strong>
+          <span class="li-text-muted">Post to Anyone</span>
+        </div>
+      </div>
+      <textarea
+        class="create-post__textarea"
+        [(ngModel)]="content"
+        placeholder="What do you want to talk about?"
+        rows="6"
+        autofocus
+      ></textarea>
+      <div class="create-post__modal-actions">
+        <button class="li-btn li-btn--muted" (click)="closeComposer()">Cancel</button>
+        <button class="li-btn li-btn--primary" (click)="submit()" [disabled]="posting() || !content.trim()">
+          {{ posting() ? 'Posting...' : 'Post' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

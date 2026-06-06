@@ -1,0 +1,42 @@
+.companies-page {
+  &__header {
+    padding: 16px 24px;
+    margin-bottom: 8px;
+
+    h1 { margin: 0; font-size: 20px; }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    margin-bottom: 8px;
+  }
+
+  &__logo {
+    width: 56px;
+    height: 56px;
+    background: #e8e8e8;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  &__info {
+    flex: 1;
+
+    a { text-decoration: none; color: var(--li-black); font-size: 16px; }
+    p { margin: 2px 0 0; font-size: 14px; color: var(--li-black-60); }
+  }
+
+  &__empty {
+    padding: 24px;
+    text-align: center;
+    color: var(--li-black-60);
+  }
+}

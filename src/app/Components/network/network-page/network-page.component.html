@@ -1,0 +1,48 @@
+<div class="network-page">
+  <div class="network-page__header li-card">
+    <h1>My Network</h1>
+    <div class="network-page__tabs">
+      <span class="network-page__tab network-page__tab--active">Grow</span>
+      <span class="network-page__tab">Catch up</span>
+    </div>
+    <p class="network-page__count">{{ connectionCount() }} connections</p>
+  </div>
+
+  @if (received().length) {
+    <section class="li-card network-page__section">
+      <h2>Invitations ({{ received().length }})</h2>
+      <div class="network-page__grid">
+        @for (req of received(); track req.id) {
+          <div class="network-page__card">
+            <div class="network-page__avatar">U{{ req.requesterUserId }}</div>
+            <p class="network-page__name">Member #{{ req.requesterUserId }}</p>
+            @if (req.message) {
+              <p class="network-page__message">{{ req.message }}</p>
+            }
+            <div class="network-page__actions">
+              <button class="li-btn li-btn--primary" (click)="accept(req.id)">Accept</button>
+              <button class="li-btn li-btn--muted">Ignore</button>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  <section class="li-card network-page__section">
+    <h2>People you may know</h2>
+    <div class="network-page__grid">
+      @for (user of suggestions(); track user.id) {
+        <div class="network-page__card">
+          <a [routerLink]="['/profile', user.id]" class="network-page__avatar">{{ getInitials(user) }}</a>
+          <a [routerLink]="['/profile', user.id]" class="network-page__name">{{ user.firstName }} {{ user.lastName }}</a>
+          <p class="network-page__headline">{{ user.headline || 'LinkedIn Member' }}</p>
+          <div class="network-page__actions">
+            <button class="li-btn li-btn--primary" (click)="connect(user.id)">Connect</button>
+            <button class="li-btn li-btn--ghost" (click)="dismiss(user.id)">Remove</button>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+</div>

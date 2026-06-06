@@ -1,0 +1,21 @@
+@if (job(); as j) {
+  <div class="job-detail li-card">
+    <h1>{{ j.title }}</h1>
+    <p class="job-detail__meta">Company #{{ j.companyId }} · {{ j.location || 'Remote' }}</p>
+    <p class="job-detail__type">{{ j.jobType }} · {{ j.workplaceType }} · {{ j.experienceLevel }}</p>
+    <div class="job-detail__actions">
+      @if (applied()) {
+        <span class="job-detail__applied">Applied</span>
+      } @else {
+        <button class="li-btn li-btn--primary" (click)="apply()" [disabled]="applying()">
+          {{ applying() ? 'Applying...' : 'Easy Apply' }}
+        </button>
+      }
+    </div>
+    <hr class="li-divider" />
+    <div class="job-detail__description">
+      <h2>About the job</h2>
+      <p>{{ j.description || 'No description provided.' }}</p>
+    </div>
+  </div>
+}

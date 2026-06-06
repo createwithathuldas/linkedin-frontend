@@ -1,0 +1,26 @@
+<div class="notifications-page">
+  <div class="notifications-page__header li-card">
+    <h1>Notifications</h1>
+    <button class="li-btn li-btn--ghost" (click)="markAllRead()">Mark all as read</button>
+  </div>
+
+  @if (loading()) {
+    <div class="li-card notifications-page__loading">Loading...</div>
+  } @else {
+    @for (n of items(); track n.id) {
+      <div class="li-card notifications-page__item" [class.notifications-page__item--unread]="!n.read">
+        <div class="notifications-page__icon">🔔</div>
+        <div class="notifications-page__content">
+          <strong>{{ n.title }}</strong>
+          @if (n.body) { <p>{{ n.body }}</p> }
+          <span class="li-text-muted">{{ n.type }}</span>
+        </div>
+        @if (!n.read) {
+          <button class="li-btn li-btn--ghost" (click)="markRead(n.id)">Mark read</button>
+        }
+      </div>
+    } @empty {
+      <div class="li-card notifications-page__empty">No notifications yet.</div>
+    }
+  }
+</div>

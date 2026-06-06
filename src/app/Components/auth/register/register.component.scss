@@ -1,0 +1,14 @@
+@import '../login/login.component.scss';
+
+.auth-page__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.auth-page__terms {
+  font-size: 12px;
+  color: var(--li-black-60);
+  line-height: 1.4;
+  margin: 8px 0;
+}

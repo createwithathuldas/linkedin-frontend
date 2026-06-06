@@ -1,0 +1,187 @@
+/* LinkedIn Design System */
+:root {
+  --li-blue: #0a66c2;
+  --li-blue-hover: #004182;
+  --li-blue-light: #70b5f9;
+  --li-bg: #f3f2ef;
+  --li-white: #ffffff;
+  --li-black: rgba(0, 0, 0, 0.9);
+  --li-black-60: rgba(0, 0, 0, 0.6);
+  --li-black-30: rgba(0, 0, 0, 0.3);
+  --li-border: rgba(0, 0, 0, 0.08);
+  --li-border-strong: rgba(0, 0, 0, 0.15);
+  --li-green: #057642;
+  --li-red: #cc1016;
+  --li-orange: #c37d16;
+  --li-radius: 8px;
+  --li-radius-full: 9999px;
+  --li-header-height: 52px;
+  --li-max-width: 1128px;
+  --li-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.08);
+  --li-font: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Fira Sans', Ubuntu, Oxygen, 'Oxygen Sans', Cantarell, 'Droid Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Lucida Grande', Helvetica, Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: var(--li-font);
+  font-size: 14px;
+  color: var(--li-black);
+  background: var(--li-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--li-blue);
+  text-decoration: none;
+  font-weight: 600;
+
+  &:hover {
+    color: var(--li-blue-hover);
+    text-decoration: underline;
+  }
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.li-card {
+  background: var(--li-white);
+  border-radius: var(--li-radius);
+  border: 1px solid var(--li-border);
+  overflow: hidden;
+}
+
+.li-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: var(--li-radius-full);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  border: 1px solid transparent;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  min-height: 32px;
+
+  &--primary {
+    background: var(--li-blue);
+    color: var(--li-white);
+    border-color: var(--li-blue);
+
+    &:hover:not(:disabled) {
+      background: var(--li-blue-hover);
+      border-color: var(--li-blue-hover);
+    }
+  }
+
+  &--secondary {
+    background: transparent;
+    color: var(--li-blue);
+    border-color: var(--li-blue);
+
+    &:hover:not(:disabled) {
+      background: rgba(10, 102, 194, 0.08);
+      border-color: var(--li-blue);
+    }
+  }
+
+  &--muted {
+    background: transparent;
+    color: var(--li-black-60);
+    border-color: var(--li-black-60);
+
+    &:hover:not(:disabled) {
+      background: rgba(0, 0, 0, 0.08);
+      border-color: var(--li-black);
+      color: var(--li-black);
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: var(--li-black-60);
+    border: none;
+
+    &:hover:not(:disabled) {
+      background: rgba(0, 0, 0, 0.08);
+      color: var(--li-black);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.li-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--li-black);
+  border-radius: 4px;
+  outline: none;
+  transition: box-shadow 0.15s;
+
+  &:focus {
+    box-shadow: 0 0 0 1px var(--li-blue);
+    border-color: var(--li-blue);
+  }
+
+  &::placeholder {
+    color: var(--li-black-60);
+  }
+}
+
+.li-avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e8e8e8;
+
+  &--48 { width: 48px; height: 48px; }
+  &--56 { width: 56px; height: 56px; }
+  &--72 { width: 72px; height: 72px; }
+}
+
+.li-divider {
+  border: none;
+  border-top: 1px solid var(--li-border);
+  margin: 0;
+}
+
+.li-text-muted {
+  color: var(--li-black-60);
+  font-size: 12px;
+}
+
+.li-text-small {
+  font-size: 12px;
+}
+
+.li-skeleton {
+  background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

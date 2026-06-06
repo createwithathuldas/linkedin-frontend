@@ -1,0 +1,124 @@
+.left-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &__profile {
+    text-align: center;
+    position: relative;
+    padding-bottom: 12px;
+  }
+
+  &__banner {
+    height: 56px;
+    background: linear-gradient(135deg, #70b5f9 0%, #0a66c2 100%);
+    border-radius: var(--li-radius) var(--li-radius) 0 0;
+  }
+
+  &__avatar-link {
+    display: inline-block;
+    margin-top: -32px;
+    text-decoration: none;
+  }
+
+  &__avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 2px solid var(--li-white);
+    background: var(--li-blue);
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+  }
+
+  &__info {
+    padding: 12px 16px 0;
+  }
+
+  &__name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--li-black);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--li-blue);
+      text-decoration: underline;
+    }
+  }
+
+  &__headline {
+    font-size: 12px;
+    color: var(--li-black-60);
+    margin: 4px 0 0;
+    line-height: 1.4;
+  }
+
+  &__stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 16px;
+    text-decoration: none;
+    font-size: 12px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.04);
+      text-decoration: none;
+    }
+  }
+
+  &__stat-label {
+    color: var(--li-black-60);
+    font-weight: 600;
+  }
+
+  &__stat-value {
+    color: var(--li-blue);
+    font-weight: 600;
+  }
+
+  &__premium {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 16px;
+    text-align: left;
+    text-decoration: none;
+    font-size: 12px;
+    color: var(--li-black-60);
+
+    strong {
+      color: var(--li-black);
+      margin-top: 4px;
+    }
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.04);
+      text-decoration: none;
+    }
+  }
+
+  &__links {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 0;
+
+    a {
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--li-black-60);
+      text-decoration: none;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.04);
+        color: var(--li-black);
+        text-decoration: none;
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+<div class="groups-page">
+  <div class="li-card groups-page__header">
+    <h1>Groups</h1>
+  </div>
+
+  <section class="li-card groups-page__section">
+    <h2>Your groups</h2>
+    @for (g of myGroups(); track g.id) {
+      <a [routerLink]="['/groups', g.id]" class="groups-page__item">
+        <div class="groups-page__icon">G</div>
+        <div>
+          <strong>{{ g.name }}</strong>
+          <p>{{ g.memberCount || 0 }} members</p>
+        </div>
+      </a>
+    } @empty {
+      <p class="li-text-muted">You haven't joined any groups yet.</p>
+    }
+  </section>
+
+  <section class="li-card groups-page__section">
+    <h2>Groups you might like</h2>
+    @for (g of suggested(); track g.id) {
+      <div class="groups-page__item">
+        <div class="groups-page__icon">G</div>
+        <div>
+          <strong>{{ g.name }}</strong>
+          <p>{{ g.description || 'No description' }}</p>
+        </div>
+        <button class="li-btn li-btn--primary" (click)="join(g.id)">Join</button>
+      </div>
+    }
+  </section>
+</div>

@@ -1,0 +1,24 @@
+@import '../login/login.component.scss';
+
+.auth-page__subtitle {
+  color: var(--li-black-60);
+  margin: 0 0 24px;
+}
+
+.auth-page__link-btn {
+  background: none;
+  border: none;
+  color: var(--li-blue);
+  font-weight: 600;
+  padding: 0;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

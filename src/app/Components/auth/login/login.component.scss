@@ -1,0 +1,76 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  padding: 24px;
+  background: var(--li-white);
+
+  &__hero {
+    max-width: 400px;
+
+    h1 {
+      font-size: 32px;
+      font-weight: 200;
+      color: var(--li-blue);
+      line-height: 1.25;
+      margin-top: 16px;
+    }
+  }
+
+  &__card {
+    width: 400px;
+    padding: 24px;
+
+    h2 {
+      font-size: 20px;
+      font-weight: 400;
+      margin: 0 0 24px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--li-black-60);
+    }
+  }
+
+  &__submit {
+    width: 100%;
+    margin-top: 8px;
+    min-height: 48px;
+    font-size: 16px;
+  }
+
+  &__error {
+    background: #fef2f2;
+    color: var(--li-red);
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+
+  &__footer {
+    text-align: center;
+    margin-top: 24px;
+    color: var(--li-black-60);
+  }
+}
+
+@media (max-width: 768px) {
+  .auth-page {
+    flex-direction: column;
+
+    &__hero {
+      text-align: center;
+    }
+  }
+}
