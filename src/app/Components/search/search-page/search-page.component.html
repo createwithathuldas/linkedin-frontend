@@ -16,7 +16,7 @@
   } @else {
     @for (r of results(); track r.id) {
       <div class="li-card search-page__result">
-        <div class="search-page__result-avatar">{{ r.type?.[0] }}</div>
+        <div class="search-page__result-avatar">{{ r.type[0] }}</div>
         <div>
           <a [routerLink]="r.type === 'Person' ? ['/profile', r.id] : r.type === 'Job' ? ['/jobs', r.id] : ['/companies', r.id]">
             {{ r.title || r.subtitle || 'Result #' + r.id }}
