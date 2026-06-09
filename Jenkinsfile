@@ -34,15 +34,10 @@ bat 'docker build -t %IMAGE% .'
 }
 
 stage('Run Container') {
-
-steps {
-
-bat 'docker rm -f %CONT% || true'
-
-bat 'docker run -d --name %CONT% -p 8080:80 %IMAGE%'
-
-}
-
+    steps {
+        bat 'docker rm -f %CONT% || true'
+        bat 'docker run -d --name %CONT% --network your_backend_network -p 8081:80 %IMAGE%'
+    }
 }
 
 }
