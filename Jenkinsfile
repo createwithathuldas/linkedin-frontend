@@ -4,9 +4,9 @@ agent any
 
 environment {
 
-IMAGE = "LinkedIn-frontend:${BUILD_NUMBER}"
+IMAGE = "linkedIn-frontend:${BUILD_NUMBER}"
 
-CONT = "LinkedIn-frontend"
+CONT = "linkedIn-frontend"
 
 }
 
