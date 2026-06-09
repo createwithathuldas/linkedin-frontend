@@ -27,7 +27,6 @@ stage('Debug') {
 stage('Build Docker Image') {
 
 steps {
-
 bat 'docker build -t %IMAGE% .'
 
 }
@@ -40,7 +39,7 @@ steps {
 
 bat 'docker rm -f %CONT% || true'
 
-bat 'docker run -d --name %CONT% -p 4200:80 %IMAGE%'
+bat 'docker run -d --name %CONT% -p 8080:80 %IMAGE%'
 
 }
 
