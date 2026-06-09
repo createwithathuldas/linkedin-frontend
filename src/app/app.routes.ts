@@ -1,11 +1,21 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/guards/auth.guard';
+import { authGuard, guestGuard } from './core/guards/auth.guard';
 import { MainLayoutComponent } from './Components/layout/main-layout/main-layout.component';
 
 export const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./modules/auth/auth.routes').then(m => m.AUTH_ROUTES)
+  },
+  {
+    path: 'admin/login',
+    canActivate: [guestGuard],
+    loadComponent: () => import('./Components/admin/admin-login/admin-login.component').then(m => m.AdminLoginComponent)
+  },
+  {
+    path: 'company/login',
+    canActivate: [guestGuard],
+    loadComponent: () => import('./Components/company/company-login/company-login.component').then(m => m.CompanyLoginComponent)
   },
   {
     path: '',
@@ -56,6 +66,14 @@ export const routes: Routes = [
       {
         path: 'analytics',
         loadComponent: () => import('./Components/analytics/analytics-page/analytics-page.component').then(m => m.AnalyticsPageComponent)
+      },
+      {
+        path: 'admin/dashboard',
+        loadComponent: () => import('./Components/admin/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent)
+      },
+      {
+        path: 'company/dashboard',
+        loadComponent: () => import('./Components/company/company-dashboard/company-dashboard.component').then(m => m.CompanyDashboardComponent)
       },
       {
         path: 'games',

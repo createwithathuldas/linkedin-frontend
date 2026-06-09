@@ -1,10 +1,42 @@
 @if (user(); as u) {
   <div class="profile-page">
     <div class="li-card profile-page__header">
-      <div class="profile-page__banner"></div>
-      <div class="profile-page__avatar">{{ getInitials() }}</div>
+      <input type="file" id="banner-file-input" style="display: none;" accept="image/*" (change)="onBannerSelected($event)" />
+      <input type="file" id="avatar-file-input" style="display: none;" accept="image/*" (change)="onAvatarSelected($event)" />
+
+      <div class="profile-page__banner" [style.background-image]="u.bannerUrl ? 'url(' + u.bannerUrl + ')' : ''">
+        @if (isOwnProfile) {
+          <button class="profile-page__edit-btn profile-page__edit-btn--banner" (click)="triggerBannerUpload()">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M3 4V19a2 2 0 002 2h14a2 2 0 002-2V4M6 14l3-3 5 5 3-3 4 4"/></svg>
+            Edit Cover
+          </button>
+        }
+      </div>
+
+      <div class="profile-page__avatar-container">
+        <div class="profile-page__avatar">
+          @if (u.avatarUrl) {
+            <img [src]="u.avatarUrl" alt="avatar" />
+          } @else {
+            {{ getInitials() }}
+          }
+        </div>
+        @if (isOwnProfile) {
+          <button class="profile-page__edit-btn profile-page__edit-btn--avatar" (click)="triggerAvatarUpload()">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M21 7.24a1 1 0 01-.29.71L10 17.59l-4 1 1-4 9.64-9.64a1 1 0 011.41 0l3 3A1 1 0 0121 7.24z"/></svg>
+          </button>
+        }
+      </div>
+
       <div class="profile-page__info">
-        <h1>{{ u.firstName }} {{ u.lastName }}</h1>
+        <div class="profile-page__info-header">
+          <h1>{{ u.firstName }} {{ u.lastName }}</h1>
+          @if (isOwnProfile) {
+            <button class="profile-page__section-edit-btn" (click)="openEditModal('header')">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M21 7.24a1 1 0 01-.29.71L10 17.59l-4 1 1-4 9.64-9.64a1 1 0 011.41 0l3 3A1 1 0 0121 7.24z"/></svg>
+            </button>
+          }
+        </div>
         <p class="profile-page__headline">{{ u.headline || 'Add a headline' }}</p>
         <p class="profile-page__location">{{ u.location || 'Add location' }}</p>
         @if (u.openToWork) {
@@ -14,25 +46,54 @@
           <span class="li-text-muted">{{ connectionDegree() === 1 ? '1st' : connectionDegree() + 'nd' }} connection</span>
         }
       </div>
-      <div class="profile-page__actions">
-        <button class="li-btn li-btn--primary" (click)="connect()">Connect</button>
-        <button class="li-btn li-btn--secondary">Message</button>
-        <button class="li-btn li-btn--muted">More</button>
+
+      @if (!isOwnProfile) {
+        <div class="profile-page__actions">
+          <button class="li-btn li-btn--primary" (click)="connect()">Connect</button>
+          <button class="li-btn li-btn--secondary">Message</button>
+          <button class="li-btn li-btn--muted">More</button>
+        </div>
+      }
+    </div>
+
+    <div class="li-card profile-page__section">
+      <div class="profile-page__section-title">
+        <h2>About</h2>
+        @if (isOwnProfile) {
+          <button class="profile-page__section-edit-btn" (click)="openEditModal('about')">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M21 7.24a1 1 0 01-.29.71L10 17.59l-4 1 1-4 9.64-9.64a1 1 0 011.41 0l3 3A1 1 0 0121 7.24z"/></svg>
+          </button>
+        }
       </div>
+      <p style="white-space: pre-wrap;">{{ u.summary || 'No summary yet.' }}</p>
     </div>
 
     <div class="li-card profile-page__section">
-      <h2>About</h2>
-      <p>{{ u.summary || 'No summary yet.' }}</p>
-    </div>
-
-    <div class="li-card profile-page__section">
-      <h2>Experience</h2>
+      <div class="profile-page__section-title">
+        <h2>Experience</h2>
+        @if (isOwnProfile) {
+          <button class="profile-page__section-add-btn" (click)="openAddModal('experience')">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          </button>
+        }
+      </div>
       @for (exp of experience(); track exp.id) {
         <div class="profile-page__item">
-          <strong>{{ exp.title }}</strong>
+          <div class="profile-page__item-header">
+            <strong>{{ exp.title }}</strong>
+            @if (isOwnProfile) {
+              <button class="profile-page__item-edit-btn" (click)="openEditItemModal('experience', exp)">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M21 7.24a1 1 0 01-.29.71L10 17.59l-4 1 1-4 9.64-9.64a1 1 0 011.41 0l3 3A1 1 0 0121 7.24z"/></svg>
+              </button>
+            }
+          </div>
           <p>{{ exp.company }} · {{ exp.location }}</p>
-          <p class="li-text-muted">{{ exp.startDate }} - {{ exp.current ? 'Present' : exp.endDate }}</p>
+          <p class="li-text-muted">
+            {{ exp.startDate | date:'mediumDate' }} - {{ exp.current ? 'Present' : (exp.endDate | date:'mediumDate') }}
+          </p>
+          @if (exp.description) {
+            <p class="profile-page__item-description">{{ exp.description }}</p>
+          }
         </div>
       } @empty {
         <p class="li-text-muted">No experience added.</p>
@@ -40,11 +101,28 @@
     </div>
 
     <div class="li-card profile-page__section">
-      <h2>Education</h2>
+      <div class="profile-page__section-title">
+        <h2>Education</h2>
+        @if (isOwnProfile) {
+          <button class="profile-page__section-add-btn" (click)="openAddModal('education')">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          </button>
+        }
+      </div>
       @for (edu of education(); track edu.id) {
         <div class="profile-page__item">
-          <strong>{{ edu.school }}</strong>
-          <p>{{ edu.degree }} {{ edu.fieldOfStudy }}</p>
+          <div class="profile-page__item-header">
+            <strong>{{ edu.school }}</strong>
+            @if (isOwnProfile) {
+              <button class="profile-page__item-edit-btn" (click)="openEditItemModal('education', edu)">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M21 7.24a1 1 0 01-.29.71L10 17.59l-4 1 1-4 9.64-9.64a1 1 0 011.41 0l3 3A1 1 0 0121 7.24z"/></svg>
+              </button>
+            }
+          </div>
+          <p>{{ edu.degree }} · {{ edu.fieldOfStudy }}</p>
+          <p class="li-text-muted">
+            {{ edu.startDate | date:'mediumDate' }} - {{ edu.endDate | date:'mediumDate' }}
+          </p>
         </div>
       } @empty {
         <p class="li-text-muted">No education added.</p>
@@ -52,14 +130,159 @@
     </div>
 
     <div class="li-card profile-page__section">
-      <h2>Skills</h2>
+      <div class="profile-page__section-title">
+        <h2>Skills</h2>
+        @if (isOwnProfile) {
+          <button class="profile-page__section-add-btn" (click)="openAddModal('skills')">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          </button>
+        }
+      </div>
       <div class="profile-page__skills">
         @for (skill of skills(); track skill.id) {
-          <span class="profile-page__skill">{{ skill.name }} ({{ skill.endorsementCount || 0 }})</span>
+          <span class="profile-page__skill">
+            {{ skill.name }} ({{ skill.endorsementCount || 0 }})
+            @if (isOwnProfile) {
+              <button class="profile-page__skill-remove" (click)="deleteSkill(skill.id)">×</button>
+            }
+          </span>
         } @empty {
           <p class="li-text-muted">No skills added.</p>
         }
       </div>
+    </div>
+  </div>
+}
+
+@if (showEditModal()) {
+  <div class="profile-page__modal-backdrop" (click)="closeEditModal()">
+    <div class="profile-page__modal li-card" (click)="$event.stopPropagation()">
+      
+      <!-- Header edit section -->
+      @if (editSection() === 'header') {
+        <h3>Edit intro</h3>
+        <div class="profile-page__form-group">
+          <label>First name *</label>
+          <input type="text" class="li-input" [(ngModel)]="editUserForm.firstName" />
+        </div>
+        <div class="profile-page__form-group">
+          <label>Last name *</label>
+          <input type="text" class="li-input" [(ngModel)]="editUserForm.lastName" />
+        </div>
+        <div class="profile-page__form-group">
+          <label>Headline</label>
+          <input type="text" class="li-input" [(ngModel)]="editUserForm.headline" placeholder="e.g. Software Engineer at Google" />
+        </div>
+        <div class="profile-page__form-group">
+          <label>Location</label>
+          <input type="text" class="li-input" [(ngModel)]="editUserForm.location" placeholder="e.g. San Francisco, California" />
+        </div>
+        <div class="profile-page__modal-actions">
+          <button class="li-btn li-btn--muted" (click)="closeEditModal()">Cancel</button>
+          <button class="li-btn li-btn--primary" (click)="saveProfileChanges()" [disabled]="!editUserForm.firstName || !editUserForm.lastName">Save</button>
+        </div>
+      }
+
+      <!-- About edit section -->
+      @if (editSection() === 'about') {
+        <h3>Edit About</h3>
+        <div class="profile-page__form-group">
+          <label>Summary</label>
+          <textarea class="li-input" rows="6" [(ngModel)]="editUserForm.summary" placeholder="Write about yourself, your background, or experience..."></textarea>
+        </div>
+        <div class="profile-page__modal-actions">
+          <button class="li-btn li-btn--muted" (click)="closeEditModal()">Cancel</button>
+          <button class="li-btn li-btn--primary" (click)="saveProfileChanges()">Save</button>
+        </div>
+      }
+
+      <!-- Experience edit section -->
+      @if (editSection() === 'experience') {
+        <h3>{{ editExperienceForm.id ? 'Edit experience' : 'Add experience' }}</h3>
+        <div class="profile-page__form-group">
+          <label>Title *</label>
+          <input type="text" class="li-input" [(ngModel)]="editExperienceForm.title" placeholder="e.g. Software Developer" />
+        </div>
+        <div class="profile-page__form-group">
+          <label>Company *</label>
+          <input type="text" class="li-input" [(ngModel)]="editExperienceForm.company" placeholder="e.g. Google" />
+        </div>
+        <div class="profile-page__form-group">
+          <label>Location</label>
+          <input type="text" class="li-input" [(ngModel)]="editExperienceForm.location" placeholder="e.g. Mountain View, CA" />
+        </div>
+        <div class="profile-page__form-group">
+          <label>Start Date *</label>
+          <input type="date" class="li-input" [(ngModel)]="editExperienceForm.startDate" />
+        </div>
+        <div class="profile-page__form-group-checkbox">
+          <input type="checkbox" id="exp-current" [(ngModel)]="editExperienceForm.current" />
+          <label for="exp-current">I am currently working in this role</label>
+        </div>
+        @if (!editExperienceForm.current) {
+          <div class="profile-page__form-group">
+            <label>End Date</label>
+            <input type="date" class="li-input" [(ngModel)]="editExperienceForm.endDate" />
+          </div>
+        }
+        <div class="profile-page__form-group">
+          <label>Description</label>
+          <textarea class="li-input" rows="4" [(ngModel)]="editExperienceForm.description" placeholder="Describe your responsibilities, key achievements, etc..."></textarea>
+        </div>
+        <div class="profile-page__modal-actions">
+          @if (editExperienceForm.id) {
+            <button class="li-btn li-btn--danger" style="margin-right: auto;" (click)="deleteExperience(editExperienceForm.id)">Delete</button>
+          }
+          <button class="li-btn li-btn--muted" (click)="closeEditModal()">Cancel</button>
+          <button class="li-btn li-btn--primary" (click)="saveExperience()" [disabled]="!editExperienceForm.title || !editExperienceForm.company || !editExperienceForm.startDate">Save</button>
+        </div>
+      }
+
+      <!-- Education edit section -->
+      @if (editSection() === 'education') {
+        <h3>{{ editEducationForm.id ? 'Edit education' : 'Add education' }}</h3>
+        <div class="profile-page__form-group">
+          <label>School *</label>
+          <input type="text" class="li-input" [(ngModel)]="editEducationForm.school" placeholder="e.g. Stanford University" />
+        </div>
+        <div class="profile-page__form-group">
+          <label>Degree</label>
+          <input type="text" class="li-input" [(ngModel)]="editEducationForm.degree" placeholder="e.g. Bachelor's degree" />
+        </div>
+        <div class="profile-page__form-group">
+          <label>Field of study</label>
+          <input type="text" class="li-input" [(ngModel)]="editEducationForm.fieldOfStudy" placeholder="e.g. Computer Science" />
+        </div>
+        <div class="profile-page__form-group">
+          <label>Start Date</label>
+          <input type="date" class="li-input" [(ngModel)]="editEducationForm.startDate" />
+        </div>
+        <div class="profile-page__form-group">
+          <label>End Date (or expected)</label>
+          <input type="date" class="li-input" [(ngModel)]="editEducationForm.endDate" />
+        </div>
+        <div class="profile-page__modal-actions">
+          @if (editEducationForm.id) {
+            <button class="li-btn li-btn--danger" style="margin-right: auto;" (click)="deleteEducation(editEducationForm.id)">Delete</button>
+          }
+          <button class="li-btn li-btn--muted" (click)="closeEditModal()">Cancel</button>
+          <button class="li-btn li-btn--primary" (click)="saveEducation()" [disabled]="!editEducationForm.school">Save</button>
+        </div>
+      }
+
+      <!-- Skills edit section -->
+      @if (editSection() === 'skills') {
+        <h3>Add Skill</h3>
+        <div class="profile-page__form-group">
+          <label>Skill Name *</label>
+          <input type="text" class="li-input" [(ngModel)]="newSkillName" placeholder="e.g. JavaScript, Angular, SQL" (keyup.enter)="addSkill()" />
+        </div>
+        <div class="profile-page__modal-actions">
+          <button class="li-btn li-btn--muted" (click)="closeEditModal()">Cancel</button>
+          <button class="li-btn li-btn--primary" (click)="addSkill()" [disabled]="!newSkillName.trim()">Add</button>
+        </div>
+      }
+
     </div>
   </div>
 }

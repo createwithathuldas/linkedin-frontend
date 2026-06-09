@@ -1,0 +1,162 @@
+<div class="company-workspace">
+  <section class="company-workspace__header">
+    <div>
+      <p class="company-workspace__eyebrow">Company</p>
+      <h1>Hiring dashboard</h1>
+    </div>
+    <div class="company-workspace__actions">
+      <a routerLink="/admin/dashboard" class="li-btn li-btn--secondary">Admin dashboard</a>
+      <a routerLink="/jobs" class="li-btn li-btn--muted">Public jobs</a>
+    </div>
+  </section>
+
+  @if (message()) {
+    <div class="company-workspace__notice company-workspace__notice--success">{{ message() }}</div>
+  }
+  @if (error()) {
+    <div class="company-workspace__notice company-workspace__notice--error">{{ error() }}</div>
+  }
+
+  <section class="company-workspace__metrics">
+    <div class="company-workspace__metric">
+      <span>{{ companies().length }}</span>
+      <p>Company pages</p>
+    </div>
+    <div class="company-workspace__metric">
+      <span>{{ jobs().length }}</span>
+      <p>Posted jobs</p>
+    </div>
+    <div class="company-workspace__metric">
+      <span>{{ applicants().length }}</span>
+      <p>Applicants in view</p>
+    </div>
+    <div class="company-workspace__metric">
+      <span>{{ openJobs().length }}</span>
+      <p>Open jobs</p>
+    </div>
+  </section>
+
+  <section class="company-workspace__grid company-workspace__grid--sidebar">
+    <aside class="li-card company-workspace__panel">
+      <h2>Company pages</h2>
+      <div class="company-workspace__list">
+        @for (company of companies(); track company.id) {
+          <button class="company-workspace__company" [class.company-workspace__company--active]="selectedCompany()?.id === company.id" type="button" (click)="selectCompany(company)">
+            <strong>{{ company.name }}</strong>
+            <span>{{ company.industry || 'Industry not set' }}</span>
+          </button>
+        } @empty {
+          <p class="company-workspace__empty">No company pages found.</p>
+        }
+      </div>
+
+      <form [formGroup]="companyForm" (ngSubmit)="createCompany()" class="company-workspace__form company-workspace__form--compact">
+        <h3>Create company page</h3>
+        <input class="li-input" formControlName="name" placeholder="Company name" />
+        <input class="li-input" formControlName="industry" placeholder="Industry" />
+        <input class="li-input" formControlName="websiteUrl" placeholder="Website" />
+        <textarea class="li-input" rows="3" formControlName="description" placeholder="Description"></textarea>
+        <button class="li-btn li-btn--secondary" type="submit" [disabled]="companyForm.invalid">Create</button>
+      </form>
+    </aside>
+
+    <div class="company-workspace__main">
+      <section class="li-card company-workspace__panel">
+        <div class="company-workspace__panel-header">
+          <div>
+            <h2>Post a job</h2>
+            <p>{{ selectedCompany()?.name || 'Select a company page' }}</p>
+          </div>
+        </div>
+        <form [formGroup]="jobForm" (ngSubmit)="createJob()" class="company-workspace__form company-workspace__form--job">
+          <label>Title</label>
+          <input class="li-input" formControlName="title" placeholder="Software Engineer" />
+          <label>Location</label>
+          <input class="li-input" formControlName="location" placeholder="Bengaluru, Remote" />
+          <label>Job type</label>
+          <select class="li-input" formControlName="jobType">
+            @for (type of jobTypes; track type) {
+              <option [value]="type">{{ type }}</option>
+            }
+          </select>
+          <label>Workplace</label>
+          <select class="li-input" formControlName="workplaceType">
+            @for (type of workplaceTypes; track type) {
+              <option [value]="type">{{ type }}</option>
+            }
+          </select>
+          <label>Experience</label>
+          <select class="li-input" formControlName="experienceLevel">
+            @for (level of experienceLevels; track level) {
+              <option [value]="level">{{ level }}</option>
+            }
+          </select>
+          <label>Skills</label>
+          <input class="li-input" formControlName="skillsJson" placeholder="Angular, C#, SQL" />
+          <label class="company-workspace__wide">Description</label>
+          <textarea class="li-input company-workspace__wide" rows="5" formControlName="description" placeholder="Responsibilities, qualifications, and team context"></textarea>
+          <button class="li-btn li-btn--primary company-workspace__wide" type="submit" [disabled]="jobForm.invalid || !selectedCompany()">Post job</button>
+        </form>
+      </section>
+
+      <section class="li-card company-workspace__panel">
+        <h2>Applicant management</h2>
+        <div class="company-workspace__jobs">
+          @for (job of jobs(); track job.id) {
+            <div class="company-workspace__job" [class.company-workspace__job--active]="selectedJob()?.id === job.id">
+              <button type="button" (click)="loadApplicants(job)">
+                <strong>{{ job.title }}</strong>
+                <span>{{ job.location || 'Remote' }} - {{ job.jobType || 'FullTime' }}</span>
+              </button>
+              <a [routerLink]="['/jobs', job.id]">View</a>
+              <button class="li-btn li-btn--muted" type="button" (click)="closeJob(job)" [disabled]="job.isOpen === false">
+                {{ job.isOpen === false ? 'Closed' : 'Close' }}
+              </button>
+            </div>
+          } @empty {
+            <p class="company-workspace__empty">No jobs posted for this company.</p>
+          }
+        </div>
+
+        @if (selectedJob()) {
+          <h3>Applicants for {{ selectedJob()?.title }}</h3>
+          <div class="company-workspace__applicants">
+            @for (applicant of applicants(); track applicant.id) {
+              <div class="company-workspace__applicant">
+                <div>
+                  <strong>User #{{ applicant.applicantUserId }}</strong>
+                  <p>{{ applicant.coverLetter || 'No cover letter provided.' }}</p>
+                  @if (applicant.resumeUrl) {
+                    <a [href]="applicant.resumeUrl" target="_blank" rel="noreferrer">Resume</a>
+                  }
+                </div>
+                <select class="li-input" [value]="applicant.stage" (change)="moveApplicant(applicant, $any($event.target).value)">
+                  @for (stage of stages; track stage) {
+                    <option [value]="stage">{{ stage }}</option>
+                  }
+                </select>
+              </div>
+            } @empty {
+              <p class="company-workspace__empty">No applicants yet.</p>
+            }
+          </div>
+        }
+      </section>
+    </div>
+  </section>
+
+  <section class="company-workspace__grid">
+    <div class="li-card company-workspace__panel">
+      <h2>Company update</h2>
+      <form [formGroup]="postForm" (ngSubmit)="publishCompanyPost()" class="company-workspace__form">
+        <textarea class="li-input" rows="5" formControlName="content" placeholder="Share an update from this company"></textarea>
+        <button class="li-btn li-btn--primary" type="submit" [disabled]="postForm.invalid || !selectedCompany()">Publish update</button>
+      </form>
+    </div>
+
+    <div class="li-card company-workspace__panel">
+      <h2>Analytics</h2>
+      <pre>{{ analytics() | json }}</pre>
+    </div>
+  </section>
+</div>

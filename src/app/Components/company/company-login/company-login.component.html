@@ -1,0 +1,30 @@
+<div class="auth-page company-auth">
+  <div class="auth-page__hero">
+    <svg viewBox="0 0 24 24" width="56" height="56" fill="#0a66c2">
+      <path d="M4 21V5a2 2 0 012-2h9a2 2 0 012 2v3h1a2 2 0 012 2v11h-6v-4H8v4H4zm4-12h2V7H8v2zm0 4h2v-2H8v2zm5-4h2V7h-2v2zm0 4h2v-2h-2v2z"/>
+    </svg>
+    <h1>Company workspace</h1>
+    <p>Post jobs, review applicants, manage updates, and track company activity.</p>
+  </div>
+
+  <div class="auth-page__card li-card">
+    <h2>Company sign in</h2>
+    @if (error()) {
+      <div class="auth-page__error">{{ error() }}</div>
+    }
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label>Email</label>
+      <input class="li-input" type="email" formControlName="email" placeholder="Work email" />
+      <label>Password</label>
+      <input class="li-input" type="password" formControlName="password" placeholder="Password" />
+      <label>MFA Code</label>
+      <input class="li-input" type="text" formControlName="mfaCode" placeholder="Optional" />
+      <button type="submit" class="li-btn li-btn--primary auth-page__submit" [disabled]="loading() || form.invalid">
+        {{ loading() ? 'Signing in...' : 'Sign in as company' }}
+      </button>
+    </form>
+    <p class="auth-page__footer">
+      Need admin tools? <a routerLink="/admin/login">Admin sign in</a>
+    </p>
+  </div>
+</div>

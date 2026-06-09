@@ -7,8 +7,8 @@ import { Education, Experience, Skill, User } from '../models';
 export class UsersService {
   private readonly api = inject(ApiService);
 
-  getUser(userId: number): Observable<User> {
-    return this.api.get<User>(`/users/${userId}`);
+  getUser(userId: number): Observable<any> {
+    return this.api.get<any>(`/users/${userId}`);
   }
 
   updateUser(userId: number, body: Partial<User>): Observable<User> {

@@ -1,7 +1,7 @@
 <div class="games-page">
   <div class="li-card games-page__header">
     <h1>Today's puzzles</h1>
-    <p>Keep your mind sharp with daily games</p>
+    <p class="li-text-muted">Keep your mind sharp with daily games</p>
   </div>
 
   <div class="games-page__types">
@@ -16,19 +16,128 @@
   </div>
 
   <div class="li-card games-page__puzzle">
-    <h2>{{ selectedType() }}</h2>
-    @if (streak()) {
-      <p class="games-page__streak">Streak: {{ streak() | json }}</p>
-    }
-    <pre class="games-page__data">{{ puzzle() | json }}</pre>
-    <div class="games-page__input">
-      <input class="li-input" [(ngModel)]="guess" placeholder="Enter your guess" (keyup.enter)="submit()" />
-      <button class="li-btn li-btn--primary" (click)="submit()" [disabled]="submitting()">
-        {{ submitting() ? 'Submitting...' : 'Submit' }}
-      </button>
+    <div class="games-page__puzzle-header">
+      <h2>{{ selectedType() }}</h2>
+      @if (streak(); as s) {
+        <span class="games-page__streak">🔥 Current Streak: {{ s.currentStreak }} (Best: {{ s.bestStreak }})</span>
+      }
     </div>
+
+    @if (parsedPuzzle()) {
+      <!-- ZIP GAME -->
+      @if (selectedType() === 'Zip') {
+        <div class="games-page__zip">
+          <p class="games-page__clue-desc">{{ parsedPuzzle().prompt }}</p>
+          <div class="games-page__zip-clues">
+            @for (clue of parsedPuzzle().clues; track clue) {
+              <span class="games-page__zip-clue">{{ clue }}</span>
+            }
+          </div>
+          <div class="games-page__input-container">
+            <input class="li-input" [(ngModel)]="guess" placeholder="Enter the central word..." (keyup.enter)="submit()" />
+            <button class="li-btn li-btn--primary" (click)="submit()" [disabled]="submitting()">
+              {{ submitting() ? 'Submitting...' : 'Submit' }}
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- SUDOKU GAME -->
+      @if (selectedType() === 'MiniSudoku') {
+        <div class="games-page__sudoku">
+          <p class="games-page__clue-desc">{{ parsedPuzzle().clue }}</p>
+          <div class="games-page__sudoku-grid">
+            @for (row of sudokuGrid; track rIdx; let rIdx = $index) {
+              <div class="games-page__sudoku-row">
+                @for (cell of row; track cIdx; let cIdx = $index) {
+                  <input
+                    type="text"
+                    maxLength="1"
+                    class="games-page__sudoku-cell"
+                    [(ngModel)]="sudokuGrid[rIdx][cIdx]"
+                    [disabled]="parsedPuzzle().grid[rIdx][cIdx] !== null"
+                  />
+                }
+              </div>
+            }
+          </div>
+          <button class="li-btn li-btn--primary games-page__submit-btn" (click)="submit()" [disabled]="submitting()">
+            Submit Attempt
+          </button>
+        </div>
+      }
+
+      <!-- TANGO GAME -->
+      @if (selectedType() === 'Tango') {
+        <div class="games-page__tango">
+          <p class="games-page__clue-desc">{{ parsedPuzzle().clue }}</p>
+          <p class="games-page__instructions">Click tiles to toggle: Empty ➔ Sun (S) ➔ Moon (M)</p>
+          <div class="games-page__tango-grid">
+            @for (row of tangoGrid; track rIdx; let rIdx = $index) {
+              <div class="games-page__tango-row">
+                @for (cell of row; track cIdx; let cIdx = $index) {
+                  <button
+                    class="games-page__tango-cell"
+                    [disabled]="parsedPuzzle().grid[rIdx][cIdx] !== null"
+                    [class.games-page__tango-cell--sun]="cell === 'S'"
+                    [class.games-page__tango-cell--moon]="cell === 'M'"
+                    (click)="toggleTangoCell(rIdx, cIdx)"
+                  >
+                    @if (cell === 'S') {
+                      ☀️
+                    } @else if (cell === 'M') {
+                      🌙
+                    } @else {
+                      ·
+                    }
+                  </button>
+                }
+              </div>
+            }
+          </div>
+          <button class="li-btn li-btn--primary games-page__submit-btn" (click)="submit()" [disabled]="submitting()">
+            Submit Attempt
+          </button>
+        </div>
+      }
+
+      <!-- QUEENS GAME -->
+      @if (selectedType() === 'Queens') {
+        <div class="games-page__queens">
+          <p class="games-page__clue-desc">{{ parsedPuzzle().clue }}</p>
+          <p class="games-page__instructions">Place 4 Queens (♛) so they don't attack each other or share a color region.</p>
+          <div class="games-page__queens-grid">
+            @for (row of queensGrid; track rIdx; let rIdx = $index) {
+              <div class="games-page__queens-row">
+                @for (cell of row; track cIdx; let cIdx = $index) {
+                  <button
+                    class="games-page__queens-cell"
+                    [style.background-color]="getQueenRegionColor(rIdx, cIdx)"
+                    (click)="toggleQueenCell(rIdx, cIdx)"
+                  >
+                    @if (cell === 'Q') {
+                      ♛
+                    } @else {
+                      ·
+                    }
+                  </button>
+                }
+              </div>
+            }
+          </div>
+          <button class="li-btn li-btn--primary games-page__submit-btn" (click)="submit()" [disabled]="submitting()">
+            Submit Attempt
+          </button>
+        </div>
+      }
+    } @else {
+      <div class="games-page__no-puzzle">Loading daily puzzle...</div>
+    }
+
     @if (result()) {
-      <p class="games-page__result">{{ result() }}</p>
+      <div class="games-page__result" [class.games-page__result--correct]="result().includes('Correct')">
+        {{ result() }}
+      </div>
     }
   </div>
 </div>

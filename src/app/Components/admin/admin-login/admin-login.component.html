@@ -1,0 +1,30 @@
+<div class="auth-page admin-auth">
+  <div class="auth-page__hero">
+    <svg viewBox="0 0 24 24" width="56" height="56" fill="#0a66c2">
+      <path d="M12 2l8 4v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V6l8-4zm0 3.2L7 7.7V12c0 3.4 2 6.5 5 7.8 3-1.3 5-4.4 5-7.8V7.7l-5-2.5z"/>
+    </svg>
+    <h1>Admin workspace</h1>
+    <p>Manage company pages, admins, jobs, and platform operations.</p>
+  </div>
+
+  <div class="auth-page__card li-card">
+    <h2>Admin sign in</h2>
+    @if (error()) {
+      <div class="auth-page__error">{{ error() }}</div>
+    }
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label>Email</label>
+      <input class="li-input" type="email" formControlName="email" placeholder="Admin email" />
+      <label>Password</label>
+      <input class="li-input" type="password" formControlName="password" placeholder="Password" />
+      <label>MFA Code</label>
+      <input class="li-input" type="text" formControlName="mfaCode" placeholder="Optional" />
+      <button type="submit" class="li-btn li-btn--primary auth-page__submit" [disabled]="loading() || form.invalid">
+        {{ loading() ? 'Signing in...' : 'Sign in as admin' }}
+      </button>
+    </form>
+    <p class="auth-page__footer">
+      Need the member app? <a routerLink="/auth/login">Member sign in</a>
+    </p>
+  </div>
+</div>

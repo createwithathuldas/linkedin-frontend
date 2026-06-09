@@ -1,14 +1,26 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ApiService } from './api.service';
-import { Company, Post } from '../models';
+import { Company, CompanyAdmin, CompanyProduct, Job, Post, SearchResult } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class CompaniesService {
   private readonly api = inject(ApiService);
 
   getCompanies(): Observable<Company[]> {
-    return this.api.get<Company[]>('/companies');
+    return this.searchCompanies('');
+  }
+
+  searchCompanies(q: string): Observable<Company[]> {
+    return this.api.get<SearchResult[]>('/search/companies', { q }).pipe(
+      map(results => (Array.isArray(results) ? results : []).map(result => ({
+        id: result.id,
+        name: result.title || `Company #${result.id}`,
+        industry: result.subtitle,
+        logoUrl: result.imageUrl
+      })))
+    );
   }
 
   getCompany(id: number): Observable<Company> {
@@ -39,11 +51,7 @@ export class CompaniesService {
     return this.api.get(`/companies/${id}/employees`);
   }
 
-  getAdmins(id: number): Observable<unknown[]> {
-    return this.api.get(`/companies/${id}/admins`);
-  }
-
-  addAdmin(id: number, userId: number): Observable<unknown> {
+  addAdmin(id: number, userId: number): Observable<CompanyAdmin> {
     return this.api.post(`/companies/${id}/admins`, { userId });
   }
 
@@ -55,15 +63,27 @@ export class CompaniesService {
     return this.api.get<Post[]>(`/companies/${id}/posts`);
   }
 
+  createPost(id: number, body: Partial<Post>): Observable<Post> {
+    return this.api.post<Post>(`/companies/${id}/posts`, body);
+  }
+
   getAnalytics(id: number): Observable<unknown> {
     return this.api.get(`/companies/${id}/analytics`);
   }
 
-  getProducts(id: number): Observable<unknown[]> {
-    return this.api.get(`/companies/${id}/products`);
+  createProduct(id: number, body: Partial<CompanyProduct>): Observable<CompanyProduct> {
+    return this.api.post<CompanyProduct>(`/companies/${id}/products`, body);
   }
 
-  getJobs(id: number): Observable<unknown[]> {
-    return this.api.get(`/companies/${id}/jobs`);
+  updateProduct(id: number, productId: number, body: Partial<CompanyProduct>): Observable<CompanyProduct> {
+    return this.api.put<CompanyProduct>(`/companies/${id}/products/${productId}`, body);
+  }
+
+  deleteProduct(id: number, productId: number): Observable<void> {
+    return this.api.delete(`/companies/${id}/products/${productId}`);
+  }
+
+  getJobs(id: number): Observable<Job[]> {
+    return this.api.get<Job[]>(`/companies/${id}/jobs`);
   }
 }

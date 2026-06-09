@@ -14,8 +14,17 @@
       <div class="network-page__grid">
         @for (req of received(); track req.id) {
           <div class="network-page__card">
-            <div class="network-page__avatar">U{{ req.requesterUserId }}</div>
-            <p class="network-page__name">Member #{{ req.requesterUserId }}</p>
+            <div class="network-page__avatar">
+              @if (req.requester?.avatarUrl) {
+                <img [src]="req.requester?.avatarUrl" alt="avatar" />
+              } @else {
+                {{ getInitials(req.requester || { id: req.requesterUserId }) }}
+              }
+            </div>
+            <p class="network-page__name">{{ req.requester ? (req.requester.firstName + ' ' + req.requester.lastName) : ('Member #' + req.requesterUserId) }}</p>
+            @if (req.requester?.headline) {
+              <p class="network-page__headline">{{ req.requester?.headline }}</p>
+            }
             @if (req.message) {
               <p class="network-page__message">{{ req.message }}</p>
             }

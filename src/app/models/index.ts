@@ -135,9 +135,29 @@ export interface Job {
   workplaceType?: string;
   experienceLevel?: string;
   description?: string;
+  skillsJson?: string;
   isOpen?: boolean;
   company?: Company;
   createdAt?: string;
+}
+
+export interface JobApplication {
+  id: number;
+  jobId: number;
+  applicantUserId: number;
+  stage: string;
+  resumeUrl?: string;
+  coverLetter?: string;
+  createdAt?: string;
+  applicant?: User;
+}
+
+export interface JobAlert {
+  id: number;
+  userId: number;
+  name: string;
+  filtersJson?: string;
+  enabled?: boolean;
 }
 
 export interface Company {
@@ -147,6 +167,21 @@ export interface Company {
   logoUrl?: string;
   websiteUrl?: string;
   description?: string;
+}
+
+export interface CompanyProduct {
+  id: number;
+  companyId: number;
+  name: string;
+  description?: string;
+  url?: string;
+  imageUrl?: string;
+}
+
+export interface CompanyAdmin {
+  id: number;
+  companyId: number;
+  userId: number;
 }
 
 export interface Group {

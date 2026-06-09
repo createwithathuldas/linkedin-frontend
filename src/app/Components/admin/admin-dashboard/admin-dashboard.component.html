@@ -1,0 +1,116 @@
+<div class="ops-page">
+  <section class="ops-page__header">
+    <div>
+      <p class="ops-page__eyebrow">Admin</p>
+      <h1>Operations dashboard</h1>
+    </div>
+    <div class="ops-page__actions">
+      <a routerLink="/company/dashboard" class="li-btn li-btn--secondary">Company tools</a>
+      <a routerLink="/feed" class="li-btn li-btn--muted">Member app</a>
+    </div>
+  </section>
+
+  @if (message()) {
+    <div class="ops-page__notice ops-page__notice--success">{{ message() }}</div>
+  }
+  @if (error()) {
+    <div class="ops-page__notice ops-page__notice--error">{{ error() }}</div>
+  }
+
+  <section class="ops-page__metrics">
+    <div class="ops-page__metric">
+      <span>{{ companies().length }}</span>
+      <p>Companies</p>
+    </div>
+    <div class="ops-page__metric">
+      <span>{{ jobs().length }}</span>
+      <p>Total jobs</p>
+    </div>
+    <div class="ops-page__metric">
+      <span>{{ openJobs().length }}</span>
+      <p>Open jobs</p>
+    </div>
+  </section>
+
+  <section class="ops-page__grid">
+    <div class="li-card ops-page__panel">
+      <h2>Create company page</h2>
+      <form [formGroup]="companyForm" (ngSubmit)="createCompany()" class="ops-page__form">
+        <label>Name</label>
+        <input class="li-input" formControlName="name" placeholder="Company name" />
+        <label>Industry</label>
+        <input class="li-input" formControlName="industry" placeholder="Technology, Finance, Healthcare" />
+        <label>Website</label>
+        <input class="li-input" formControlName="websiteUrl" placeholder="https://example.com" />
+        <label>Description</label>
+        <textarea class="li-input" rows="4" formControlName="description" placeholder="Short company description"></textarea>
+        <button class="li-btn li-btn--primary" type="submit" [disabled]="companyForm.invalid">Create page</button>
+      </form>
+    </div>
+
+    <div class="li-card ops-page__panel">
+      <h2>Assign company admin</h2>
+      <form [formGroup]="adminForm" (ngSubmit)="addAdmin()" class="ops-page__form">
+        <label>Company</label>
+        <select class="li-input" formControlName="companyId">
+          @for (company of companies(); track company.id) {
+            <option [value]="company.id">{{ company.name }}</option>
+          }
+        </select>
+        <label>User ID</label>
+        <input class="li-input" type="number" formControlName="userId" placeholder="Existing user ID" />
+        <button class="li-btn li-btn--primary" type="submit" [disabled]="adminForm.invalid">Add admin</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="ops-page__grid">
+    <div class="li-card ops-page__panel">
+      <h2>Company pages</h2>
+      <div class="ops-page__list">
+        @for (company of companies(); track company.id) {
+          <div class="ops-page__row" [class.ops-page__row--active]="selectedCompany()?.id === company.id">
+            <span>
+              <strong>{{ company.name }}</strong>
+              <small>{{ company.industry || 'Industry not set' }}</small>
+            </span>
+            <button class="li-btn li-btn--secondary" type="button" (click)="selectCompany(company)">Select</button>
+            <a [routerLink]="['/companies', company.id]">View</a>
+          </div>
+        } @empty {
+          <p class="ops-page__empty">No company pages found.</p>
+        }
+      </div>
+    </div>
+
+    <div class="li-card ops-page__panel">
+      <h2>Selected company analytics</h2>
+      @if (selectedCompany()) {
+        <h3>{{ selectedCompany()?.name }}</h3>
+        <pre>{{ companyAnalytics() | json }}</pre>
+      } @else {
+        <p class="ops-page__empty">Select a company to inspect analytics.</p>
+      }
+    </div>
+  </section>
+
+  <section class="li-card ops-page__panel">
+    <h2>Job oversight</h2>
+    <div class="ops-page__table">
+      @for (job of jobs(); track job.id) {
+        <div class="ops-page__job">
+          <div>
+            <a [routerLink]="['/jobs', job.id]"><strong>{{ job.title }}</strong></a>
+            <p>Company #{{ job.companyId }} - {{ job.location || 'Remote' }} - {{ job.jobType || 'FullTime' }}</p>
+          </div>
+          <span class="ops-page__status" [class.ops-page__status--closed]="job.isOpen === false">
+            {{ job.isOpen === false ? 'Closed' : 'Open' }}
+          </span>
+          <button class="li-btn li-btn--muted" type="button" (click)="closeJob(job)" [disabled]="job.isOpen === false">Close</button>
+        </div>
+      } @empty {
+        <p class="ops-page__empty">No jobs found.</p>
+      }
+    </div>
+  </section>
+</div>

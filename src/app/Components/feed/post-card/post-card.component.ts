@@ -2,7 +2,7 @@ import { Component, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { Post } from '../../../models';
+import { Comment, Post, User } from '../../../models';
 import { PostsService } from '../../../Services/posts.service';
 
 @Component({
@@ -20,8 +20,9 @@ export class PostCardComponent {
 
   readonly reactions = ['Like', 'Celebrate', 'Support', 'Love', 'Insightful', 'Funny'];
 
-  getInitials(userId: number): string {
-    return `U${userId}`;
+  getInitials(user?: User): string {
+    if (!user) return '?';
+    return `${user.firstName?.[0] ?? ''}${user.lastName?.[0] ?? ''}`.toUpperCase();
   }
 
   formatDate(date?: string): string {
@@ -44,7 +45,7 @@ export class PostCardComponent {
   }
 
   toggleComments = false;
-  comments: { id: number; text: string; userId: number }[] = [];
+  comments: Comment[] = [];
   newComment = '';
 
   loadComments(): void {
@@ -67,5 +68,15 @@ export class PostCardComponent {
         });
       }
     });
+  }
+
+  getMediaUrls(): string[] {
+    const json = this.post().mediaUrlsJson;
+    if (!json) return [];
+    try {
+      return JSON.parse(json);
+    } catch {
+      return [];
+    }
   }
 }

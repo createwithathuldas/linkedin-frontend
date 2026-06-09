@@ -66,6 +66,8 @@
           <div class="li-header__me-menu" (click)="$event.stopPropagation()">
             <a routerLink="/profile/{{ user()?.id }}">View Profile</a>
             <a routerLink="/settings">Settings</a>
+            <a routerLink="/company/dashboard">Company dashboard</a>
+            <a routerLink="/admin/dashboard">Admin dashboard</a>
             <a routerLink="/premium">Try Premium</a>
             <hr class="li-divider" />
             <button (click)="logout()">Sign Out</button>
@@ -73,7 +75,7 @@
         }
       </div>
 
-      <a routerLink="/premium" class="li-header__nav-item li-header__nav-item--premium">
+      <a routerLink="/company/dashboard" class="li-header__nav-item li-header__nav-item--premium">
         <span class="li-header__nav-icon">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
         </span>

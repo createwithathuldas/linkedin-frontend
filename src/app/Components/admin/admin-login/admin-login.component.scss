@@ -1,0 +1,12 @@
+@import '../../auth/login/login.component.scss';
+
+.admin-auth {
+  &__note {
+    color: var(--li-black-60);
+  }
+
+  p {
+    color: var(--li-black-60);
+    line-height: 1.5;
+  }
+}

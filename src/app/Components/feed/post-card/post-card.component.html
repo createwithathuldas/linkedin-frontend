@@ -1,14 +1,35 @@
 <article class="post-card li-card">
   <header class="post-card__header">
-    <a [routerLink]="['/profile', post().authorUserId]" class="post-card__avatar">{{ getInitials(post().authorUserId) }}</a>
+    <a [routerLink]="['/profile', post().authorUserId]" class="post-card__avatar">
+      @if (post().author?.avatarUrl) {
+        <img [src]="post().author?.avatarUrl" alt="avatar" />
+      } @else {
+        {{ getInitials(post().author) }}
+      }
+    </a>
     <div class="post-card__meta">
-      <a [routerLink]="['/profile', post().authorUserId]" class="post-card__author">Member #{{ post().authorUserId }}</a>
+      <a [routerLink]="['/profile', post().authorUserId]" class="post-card__author">
+        {{ post().author ? (post().author?.firstName + ' ' + post().author?.lastName) : ('Member #' + post().authorUserId) }}
+      </a>
+      @if (post().author?.headline) {
+        <span class="post-card__headline">{{ post().author?.headline }}</span>
+      }
       <span class="post-card__time">{{ formatDate(post().createdAt) }}</span>
     </div>
   </header>
 
   <div class="post-card__content">
     <p>{{ post().content }}</p>
+
+    @for (mediaUrl of getMediaUrls(); track mediaUrl) {
+      <div class="post-card__media">
+        @if (post().type === 'Video') {
+          <video [src]="mediaUrl" controls class="post-card__media-video"></video>
+        } @else {
+          <img [src]="mediaUrl" class="post-card__media-img" alt="Post media" />
+        }
+      </div>
+    }
   </div>
 
   <div class="post-card__stats">
@@ -41,8 +62,25 @@
     <div class="post-card__comments">
       @for (comment of comments; track comment.id) {
         <div class="post-card__comment">
-          <span class="post-card__comment-author">User #{{ comment.userId }}</span>
-          <p>{{ comment.text }}</p>
+          <div class="post-card__comment-header">
+            <a [routerLink]="['/profile', comment.userId]" class="post-card__comment-avatar">
+              @if (comment.user?.avatarUrl) {
+                <img [src]="comment.user?.avatarUrl" alt="avatar" />
+              } @else {
+                {{ getInitials(comment.user) }}
+              }
+            </a>
+            <div class="post-card__comment-meta">
+              <a [routerLink]="['/profile', comment.userId]" class="post-card__comment-author">
+                {{ comment.user ? (comment.user.firstName + ' ' + comment.user.lastName) : ('User #' + comment.userId) }}
+              </a>
+              @if (comment.user?.headline) {
+                <span class="post-card__comment-headline">{{ comment.user?.headline }}</span>
+              }
+              <span class="post-card__comment-time">{{ formatDate(comment.createdAt) }}</span>
+            </div>
+          </div>
+          <p class="post-card__comment-text">{{ comment.text }}</p>
         </div>
       }
       <div class="post-card__comment-input">

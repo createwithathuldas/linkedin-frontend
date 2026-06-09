@@ -15,6 +15,10 @@ export class PostsService {
     return this.api.post<Post>('/posts', body);
   }
 
+  uploadMedia(file: File): Observable<{ url: string; fileName: string; size: number }> {
+    return this.api.upload<{ url: string; fileName: string; size: number }>('/posts/media', file);
+  }
+
   getPost(id: number): Observable<Post> {
     return this.api.get<Post>(`/posts/${id}`);
   }

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
-import { Job } from '../models';
+import { Job, JobAlert, JobApplication } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class JobsService {
@@ -31,11 +31,11 @@ export class JobsService {
     return this.api.post(`/jobs/${id}/apply`, body);
   }
 
-  getApplicants(id: number): Observable<unknown[]> {
-    return this.api.get(`/jobs/${id}/applicants`);
+  getApplicants(id: number): Observable<JobApplication[]> {
+    return this.api.get<JobApplication[]>(`/jobs/${id}/applicants`);
   }
 
-  updateApplicantStage(jobId: number, appId: number, stage: string): Observable<unknown> {
+  updateApplicantStage(jobId: number, appId: number, stage: string): Observable<JobApplication> {
     return this.api.put(`/jobs/${jobId}/applicants/${appId}/stage`, { stage });
   }
 
@@ -59,7 +59,7 @@ export class JobsService {
     return this.api.get('/jobs/recommended/categories');
   }
 
-  getAppliedJobs(): Observable<unknown[]> {
+  getAppliedJobs(): Observable<JobApplication[]> {
     return this.api.get('/jobs/applied');
   }
 
@@ -67,12 +67,16 @@ export class JobsService {
     return this.api.get('/jobs/categories');
   }
 
-  getJobAlerts(): Observable<unknown[]> {
+  getJobAlerts(): Observable<JobAlert[]> {
     return this.api.get('/job-alerts');
   }
 
-  createJobAlert(body: unknown): Observable<unknown> {
-    return this.api.post('/job-alerts', body);
+  createJobAlert(body: Partial<JobAlert>): Observable<JobAlert> {
+    return this.api.post<JobAlert>('/job-alerts', body);
+  }
+
+  updateJobAlert(id: number, body: Partial<JobAlert>): Observable<JobAlert> {
+    return this.api.put<JobAlert>(`/job-alerts/${id}`, body);
   }
 
   deleteJobAlert(id: number): Observable<void> {

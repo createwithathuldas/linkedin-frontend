@@ -52,7 +52,9 @@ export class NetworkPageComponent implements OnInit {
     this.connections.dismissSuggestion(userId).subscribe({ next: () => this.load() });
   }
 
-  getInitials(user: User): string {
+  getInitials(user?: Partial<User> | null): string {
+    if (!user) return '?';
+    if (!user.firstName && !user.lastName) return 'U';
     return `${user.firstName?.[0] ?? ''}${user.lastName?.[0] ?? ''}`.toUpperCase();
   }
 }
